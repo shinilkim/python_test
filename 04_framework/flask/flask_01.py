@@ -1,12 +1,17 @@
 # https://pypi.python.org/pypi/Flask/0.12
 # pip install Flask
+import sys
 from flask import Flask
 app = Flask(__name__)
+
+sys.path.append("../../classes/")
+from kr.util.stringUtil import StringUtil
 
 # localhost:5000
 @app.route("/")
 def hello():
-	return "Hello World!"
+    stringUtil = StringUtil()
+    return "Hello World! " + stringUtil.test()
 
 # localhost:5000/user/shinil.kim
 @app.route("/user/<userName>")
