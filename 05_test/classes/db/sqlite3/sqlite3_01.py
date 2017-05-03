@@ -62,15 +62,20 @@ class Sqlite:
       print(query)
     return data
 
-  def datatable(self, query, param):
+  def datatables(self, query, param, key):
     '''
     json.dump(obj, fp, skipkeys=False, ensure_ascii=True, check_circular=True, allow_nan=True, cls=None, indent=None,
             separators=None, default=None, sort_keys=False, **kw)
     '''
-    return json.dumps({'data': db.rowsJson(query, param)}, ensure_ascii=False)
+    data = {}
+    data[key] = db.rowsJson(query, param)
+    return json.dumps(data, ensure_ascii=False)
+
+  def datatable(self, query, param):
+    return self.datatables(query, param, 'data')
 
   def printDatatable(self, query, param):
-    print(json.dumps(db.rowsJson(query, param), indent=2, ensure_ascii=False))
+    print(json.dumps(db.rowsJson(query, param), ensure_ascii=False))
 
   def setMode(self, mode):
     if mode and mode.upper() == "FACTORY":
@@ -154,7 +159,8 @@ if __name__ == '__main__':
 
   print('\n# 5. json')
   query = "select * from cars"
-  print(db.datatable(query, None))
+  data = db.datatable(query, None)
+  print(data)
 
   print('\n# 6. 테이블목록 조회')
   db.printDatatable("SELECT * FROM sqlite_master WHERE type='table'",None)
