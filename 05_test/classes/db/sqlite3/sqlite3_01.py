@@ -67,10 +67,10 @@ class Sqlite:
     json.dump(obj, fp, skipkeys=False, ensure_ascii=True, check_circular=True, allow_nan=True, cls=None, indent=None,
             separators=None, default=None, sort_keys=False, **kw)
     '''
-    return json.dumps({'data': db.rowsJson(query, param)})
+    return json.dumps({'data': db.rowsJson(query, param)}, ensure_ascii=False)
 
   def printDatatable(self, query, param):
-    print(json.dumps(db.rowsJson(query, param), indent=2))
+    print(json.dumps(db.rowsJson(query, param), indent=2, ensure_ascii=False))
 
   def setMode(self, mode):
     if mode and mode.upper() == "FACTORY":
@@ -128,7 +128,7 @@ if __name__ == '__main__':
   query = '''
         DROP TABLE IF EXISTS Cars;
         CREATE TABLE Cars(Id INT, Name TEXT, Price INT);
-        INSERT INTO Cars VALUES(1,'Audi',52642);
+        INSERT INTO Cars VALUES(1,'아우디',52642);
         INSERT INTO Cars VALUES(2,'Mercedes',57127);
   '''
   #db.setMode("FACTORY")
