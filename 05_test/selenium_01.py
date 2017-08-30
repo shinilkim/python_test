@@ -14,7 +14,7 @@ browser = webdriver.Chrome(binary)
 time.sleep(1)
 
 # 02. Connection
-browser.get('http://www.bigfile.co.kr')
+browser.get('http://www.bigfile.co.kr/sso/sso_user_login.php')
 
 # 03. Account settings
 time.sleep(1)

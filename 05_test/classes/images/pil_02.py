@@ -20,9 +20,9 @@ class MyImage:
     for file in files:
       ctime = self.getCtime(file)
       name = os.path.basename(file)
-      ext = os.path.splitext(name)
+      ext = os.path.splitext(name)[1]
       tag = self.getTags(file)
-      to_file_name = os.path.join(self.dir, tag['Model'].strip()+'_'+str(cnt)+'_'+self.getTargetFileName(ctime)+ext[1])
+      to_file_name = os.path.join(self.dir, tag['Model'].strip()+'_'+self.getTargetFileName(ctime)+'_'+str(cnt)+ext[1])
       cnt = cnt + 1
       if os.path.isdir(self.dir):
         #print(to_file_name)
@@ -49,11 +49,29 @@ class MyImage:
       decoded = TAGS.get(tag, tag)
       ret[decoded] = value
       #print(decoded, value)
-
     return ret
+
+  #
+  def rename2(self):
+    files = glob.glob(os.path.join(self.dir, "*"))
+    cnt_target = len(files)
+    cnt_save = 0
+    cnt = 1
+    for file in files:
+      name = os.path.basename(file).split("_")
+      name = name[0]+name[1]+name[2]+'.jpg'
+      to_file_name = os.path.join(self.dir, name)
+      cnt = cnt + 1
+      if os.path.isdir(self.dir):
+        #print(to_file_name)
+        os.rename(file, to_file_name)
+        cnt_save = cnt_save + 1
+    print('전체 파일명 변경 건수 : ',cnt_save,'/',cnt_target)
 
 ##################
 if __name__ == '__main__':
   dir = 'C:/Users/shinil.kim/Pictures/Camera Roll/SLT-A55V';
+  dir = 'E:/DCIM/163MSDCF'
   image = MyImage(dir)
   image.rename()
+  #image.rename2()
