@@ -12,22 +12,29 @@ class MyImage:
     self.dir = dir
 
   # 파일명 변경(제조사모델명_yyyy.mm.dd-hhmiss.파일확장자명)
-  def rename(self):
+  def rename(self, isNumber):
     files = glob.glob(os.path.join(self.dir, "*.*"))
     cnt_target = len(files)
     cnt_save = 0
     cnt = 1
     for file in files:
-      ctime = self.getCtime(file)
-      name = os.path.basename(file)
-      ext = os.path.splitext(name)[1]
-      tag = self.getTags(file)
-      to_file_name = os.path.join(self.dir, tag['Model'].strip()+'_'+self.getTargetFileName(ctime)+'_'+str(cnt)+ext[1])
-      cnt = cnt + 1
-      if os.path.isdir(self.dir):
-        #print(to_file_name)
-        os.rename(file, to_file_name)
-        cnt_save = cnt_save + 1
+      try:
+        ctime = self.getCtime(file)
+        name = os.path.basename(file)
+        ext = os.path.splitext(name)[1]
+        tag = self.getTags(file)
+        to_file_name = os.path.join(self.dir, tag['Model'].strip() + '_' + self.getTargetFileName(ctime))
+        if isNumber:
+          to_file_name += '_'+str(cnt)
+        to_file_name += ext
+
+        cnt = cnt + 1
+        if os.path.isdir(self.dir):
+          print(to_file_name)
+          os.rename(file, to_file_name)
+          cnt_save = cnt_save + 1
+      except:
+        print('error: ',file)
     print('전체 파일명 변경 건수 : ',cnt_save,'/',cnt_target)
 
   # 변경할 파일명
@@ -38,7 +45,10 @@ class MyImage:
   # 이미지 생성일시
   def getCtime(self, file):
     info = Image.open(file)._getexif()
-    ctime = info[0x9003]
+    if info is None:
+      ctime = ''
+    else:
+      ctime = info[0x9003]
     return ctime
 
   # 이미지 속성
@@ -70,8 +80,12 @@ class MyImage:
 
 ##################
 if __name__ == '__main__':
-  dir = 'C:/Users/shinil.kim/Pictures/Camera Roll/SLT-A55V';
-  dir = 'E:/DCIM/163MSDCF'
+  #dir = 'C:/Users/shinil.kim/Pictures/Camera Roll/SLT-A55V';
+  #dir = 'E:/DCIM/163MSDCF'
+  dir = 'C:/Users\shinil.kim/Pictures/Camera Roll/남양주온누리/2018년'
+  #dir = 'C:/Users\shinil.kim/Pictures/Camera Roll/NX11'
   image = MyImage(dir)
-  image.rename()
+  image.rename(False) # 이미지명에 시퀀스 붙이기 N
+  #image.rename(True) # 이미지명에 시퀀스 붙이기 Y
+
   #image.rename2()

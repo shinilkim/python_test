@@ -14,6 +14,8 @@ browser = webdriver.Chrome(binary)
 time.sleep(1)
 
 # 02. Connection
+browser.get('http://www.bigfile.co.kr')
+time.sleep(1)
 browser.get('http://www.bigfile.co.kr/sso/sso_user_login.php')
 
 # 03. Account settings
@@ -25,9 +27,9 @@ search.send_keys('fmam0507')
 search.send_keys(Keys.RETURN)
 
 # 04. Participate in the svent
-time.sleep(1)
+time.sleep(2)
 browser.get('http://www.bigfile.co.kr/event/2014_stamp/main.php')
-time.sleep(1)
+time.sleep(2)
 search = browser.find_element_by_class_name('chul_link')
 search.click();
 

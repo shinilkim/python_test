@@ -96,7 +96,7 @@ class NaverNews:
 
 
 if __name__ == "__main__":
-  list_size = 4
+  list_size = 8
   url = "http://m.news.naver.com"
   uri = "/newsflash.nhn?mode=LS2D&sid1=101&sid2=260&page="
   news = NaverNews()
